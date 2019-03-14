@@ -11,8 +11,8 @@ class Product extends Model
     const TYPE_CROWDFUNDING = 'crowdfunding';
 
     public static $typeMap = [
-        self::TYPE_NORMAL => 'normal',
-        self::TYPE_CROWDFUNDING => 'crowdfunding',
+        self::TYPE_NORMAL => '普通商品',
+        self::TYPE_CROWDFUNDING => '众筹商品',
     ];
 
     protected $fillable = [
@@ -45,6 +45,6 @@ class Product extends Model
 
     public function crowdfunding()
     {
-        return $this->hasOne(CrowdfundingProducts::class);
+        return $this->hasOne(CrowdfundingProduct::class);
     }
 }
