@@ -7,38 +7,14 @@ use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Services\OrderService;
+use App\Jobs\RefundCrowdfundingOrders;
 
 class FinishCrowdfunding extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'cron:finish-crowdfunding';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = '结束众筹';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
         CrowdfundingProduct::query()
@@ -57,7 +33,6 @@ class FinishCrowdfunding extends Command
                     $this->crowdfundingSucceed($crowdfunding);
                 }
             });
-
     }
 
     protected function crowdfundingSucceed(CrowdfundingProduct $crowdfunding)
@@ -74,6 +49,8 @@ class FinishCrowdfunding extends Command
         $crowdfunding->update([
             'status' => CrowdfundingProduct::STATUS_FAIL,
         ]);
+        dispatch(new RefundCrowdfundingOrders($crowdfunding));
+
         $orderService = app(OrderService::class);
         // 查询出所有参与了此众筹的订单
         Order::query()
@@ -86,9 +63,9 @@ class FinishCrowdfunding extends Command
                 $query->where('product_id', $crowdfunding->product_id);
             })
             ->get()
-            ->each(function (Order $order) {
-                // todo 调用退款逻辑
+            ->each(function (Order $order) use ($orderService) {
                 $orderService->refundOrder($order);
             });
     }
+
 }

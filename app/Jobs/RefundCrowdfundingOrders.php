@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Jobs;
 
 use App\Models\CrowdfundingProduct;
@@ -11,26 +12,18 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
+// ShouldQueue 代表此任务需要异步执行
 class RefundCrowdfundingOrders implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $crowdfunding;
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
+
     public function __construct(CrowdfundingProduct $crowdfunding)
     {
         $this->crowdfunding = $crowdfunding;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
         // 如果众筹的状态不是失败则不执行退款，原则上不会发生，这里只是增加健壮性

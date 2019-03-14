@@ -11,6 +11,7 @@ use App\Jobs\CloseOrder;
 use Carbon\Carbon;
 use App\Models\CouponCode;
 use App\Exceptions\CouponCodeUnavailableException;
+use App\Exceptions\InternalException;
 
 class OrderService
 {
@@ -174,7 +175,7 @@ class OrderService
                 }
                 break;
             default:
-                throw new InternalException('未知订单支付方式：' . $order->payment_method);
+                throw new InternalException('未知订单支付方式：'.$order->payment_method);
                 break;
         }
     }
