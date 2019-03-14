@@ -55,3 +55,6 @@ Route::post('payment/wechat/refund_notify', 'PaymentController@wechatRefundNotif
         'subject' => 'test subject - 测试',
     ]);
 });*/
+Route::group(['middleware' => ['auth', 'verified']], function() {
+    Route::post('crowdfunding_orders', 'OrdersController@crowdfunding')->name('crowdfunding_orders.store');
+});
