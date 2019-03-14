@@ -100,8 +100,8 @@ class OrderService
                     'zip'           => $address->zip,
                     'contact_name'  => $address->contact_name,
                     'contact_phone' => $address->contact_phone,
-                    'type'         => Order::TYPE_CROWDFUNDING,
                 ],
+                'type'         => Order::TYPE_CROWDFUNDING,
                 'remark'       => '',
                 'total_amount' => $sku->price * $amount,
             ]);
@@ -124,7 +124,6 @@ class OrderService
 
             return $order;
         });
-
         // 众筹结束时间减去当前时间得到剩余秒数
         $crowdfundingTtl = $sku->product->crowdfunding->end_at->getTimestamp() - time();
         // 剩余秒数与默认订单关闭时间取较小值作为订单关闭时间
