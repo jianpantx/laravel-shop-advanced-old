@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Moontoast\Math\BigNumber;
+use Illuminate\Support\Carbon;
 
 class InstallmentItem extends Model
 {
@@ -41,7 +41,7 @@ class InstallmentItem extends Model
     public function getTotalAttribute()
     {
         // 小数点计算需要用 bcmath 扩展提供的函数
-        $total = big_number($this->base)>add($this->fee);
+        $total = big_number($this->base)->add($this->fee);
         if (!is_null($this->fine)) {
             $total->add($this->fine);
         }
