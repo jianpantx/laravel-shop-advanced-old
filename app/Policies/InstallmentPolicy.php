@@ -19,7 +19,6 @@ class InstallmentPolicy
      */
     public function view(User $user, Installment $installment)
     {
-        //
         return $installment->user_id == $user->id;
     }
 
