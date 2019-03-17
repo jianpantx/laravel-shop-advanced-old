@@ -16,6 +16,8 @@ class Product extends Model
     ];
 
     protected $fillable = [
+        'title',
+        'long_title', // 添加 long_title 到 $fillable 属性中
         'title', 'description', 'image', 'on_sale',
         'rating', 'sold_count', 'review_count', 'price', 'type',
     ];
