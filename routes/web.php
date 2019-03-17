@@ -58,4 +58,5 @@ Route::post('payment/wechat/refund_notify', 'PaymentController@wechatRefundNotif
 Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::post('crowdfunding_orders', 'OrdersController@crowdfunding')->name('crowdfunding_orders.store');
     Route::post('payment/{order}/installment', 'PaymentController@payByInstallment')->name('payment.installment');
+    Route::get('installments', 'InstallmentsController@index')->name('installments.index');
 });
