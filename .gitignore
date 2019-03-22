@@ -18,3 +18,5 @@ yarn-error.log
 /public/mix-manifest.json
 /public/fonts
 /resources/wechat_pay
+/.phpstorm.meta.php
+/_ide_helper.php

@@ -6,6 +6,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\ServiceProvider;
 use Monolog\Logger;
 use Yansongda\Pay\Pay;
+use Elasticsearch\ClientBuilder as ESClientBuilder;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +30,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        if ($this->app->environment() !== 'production') {
+            $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+        }
         // 往服务容器中注入一个名为 alipay 的单例对象
         $this->app->singleton('alipay', function () {
             $config = config('pay.alipay');
@@ -57,6 +61,17 @@ class AppServiceProvider extends ServiceProvider
             }
             // 调用 Yansongda\Pay 来创建一个微信支付对象
             return Pay::wechat($config);
+        });
+
+        $this->app->singleton('es', function(){
+            //从配置文件读取 elasticsearch 服务器列表
+            $builder = ESClientBuilder::create()->setHosts(config('database.elasticsearch.hosts'));
+            //如果是开发环境
+            if (app()->environment() === 'local') {
+                //配置日志，elasticsearch 的请求和方辉数据将打印到日志文件中，方便我们调试
+                $builder->setLogger(app('log')->driver());
+            }
+            return $builder->build();
         });
     }
 }
