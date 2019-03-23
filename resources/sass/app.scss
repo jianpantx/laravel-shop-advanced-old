@@ -59,35 +59,41 @@ body {
   }
 }
 
-.products-index-page, .products-favorites-page {
-  .pagination {
-    margin-right: 5px;
-  }
+
+@mixin product-list {
   .products-list {
     padding: 0 15px;
+
     .product-item {
       padding: 0 5px;
       margin-bottom: 10px;
+
       .product-content {
         border: 1px solid #eee;
+
         .top {
           padding: 5px;
+
           img {
             width: 100%;
           }
+
           .price {
             margin-top: 5px;
             font-size: 20px;
             color: #ff0036;
+
             b {
               font-size: 14px;
             }
           }
+
           .title {
             margin-top: 10px;
             height: 32px;
             line-height: 12px;
             max-height: 32px;
+
             a {
               font-size: 12px;
               line-height: 14px;
@@ -96,21 +102,26 @@ body {
             }
           }
         }
+
         .bottom {
           font-size: 12px;
           display: flex;
+
           .sold_count span {
             color: #b57c5b;
             font-weight: bold;
           }
+
           .review_count span {
             color: #38b;
             font-weight: bold;
           }
-          &>div {
+
+          & > div {
             &:first-child {
               border-right: 1px solid #eee;
             }
+
             padding: 10px 5px;
             line-height: 12px;
             flex-grow: 1;
@@ -120,7 +131,15 @@ body {
       }
     }
   }
+}
+
+.products-index-page, .products-favorites-page {
+  .pagination {
+    margin-right: 5px;
+  }
+
   // 替换原有的 .search-form
+  @include product-list;
   .search-form {
     padding: 0 5px 10px;
     .category-breadcrumb {
@@ -186,6 +205,15 @@ body {
 }
 
 .products-show-page {
+  .similar-products {
+    @include product-list;
+    .title {
+      font-weight: normal;
+    }
+    .price {
+      background-color: unset;
+    }
+  }
   .properties-list {
     border-bottom: 1px solid #e6e6e6;
     margin-bottom: 20px;
@@ -684,3 +712,4 @@ body {
     width: auto;
   }
 }
+

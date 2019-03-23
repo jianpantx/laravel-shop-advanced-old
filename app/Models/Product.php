@@ -102,4 +102,10 @@ class Product extends Model
 
         return $arr;
     }
+
+    //查出对应商品 保持次序
+    public function scopeByIds($query, $ids)
+    {
+        return $query->whereIn('id', $ids)->orderByRaw(sprintf("FIND_IN_SET(id, '%s')", join(',', $ids)));
+    }
 }
